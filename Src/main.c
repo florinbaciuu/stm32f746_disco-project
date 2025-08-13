@@ -80,36 +80,20 @@ static void UART1_Init(void) {
 static void SystemClock_Config(void) {
     RCC_ClkInitTypeDef RCC_ClkInitStruct;
     RCC_OscInitTypeDef RCC_OscInitStruct;
-
-    /* Enable Power Control clock */
-    __HAL_RCC_PWR_CLK_ENABLE();
-
-    /* The voltage scaling allows optimizing the power consumption when the device
-     is clocked below the maximum system frequency, to update the voltage scaling
-     value regarding system frequency refer to product datasheet.  */
+    __HAL_RCC_PWR_CLK_ENABLE(); /* Enable Power Control clock */
     __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-    /*##-1- System Clock Configuration #########################################*/
-    /* Enable HSE Oscillator and activate PLL with HSE as source */
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState       = RCC_HSE_ON;
     RCC_OscInitStruct.PLL.PLLState   = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource  = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLM       = 25;
-    // RCC_OscInitStruct.PLL.PLLN       = 400;
-    RCC_OscInitStruct.PLL.PLLN = 432;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    // RCC_OscInitStruct.PLL.PLLQ       = 8;
-    RCC_OscInitStruct.PLL.PLLQ = 9;
+    RCC_OscInitStruct.PLL.PLLN       = 432;
+    RCC_OscInitStruct.PLL.PLLP       = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ       = 9;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
         Error_Handler();
-
-    /* Activate the Over-Drive mode */
     if (HAL_PWREx_EnableOverDrive() != HAL_OK)
         Error_Handler();
-
-    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
-     clocks dividers */
     RCC_ClkInitStruct.ClockType      = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
     RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;
@@ -180,13 +164,14 @@ void vApplicationStackOverflowHook(TaskHandle_t t, char* name) {
 /********************************************** */
 /*                   TASK                       */
 /********************************************** */
-static void UartTask(void* arg) {
+static void uart_TaskFunction_t(void* arg) {
     (void) arg;
     const char* msg = "RTOS OK\r\n";
     for (;;) {
         HAL_UART_Transmit(&huart1, (uint8_t*) msg, strlen(msg), 100);
         printf("The board is on! X\r\n");
         print_heap();
+        portYIELD();
         vTaskDelay(pdMS_TO_TICKS(2500));
     }
 }
@@ -196,7 +181,7 @@ static void UartTask(void* arg) {
 /********************************************** */
 /*                   TASK                       */
 /********************************************** */
-static void LEDTask(void* arg) {
+static void led_TaskFunction_t(void* arg) {
     (void) arg;
     for (;;) {
         HAL_GPIO_TogglePin(LED_GPIO_PORT, LED_PIN);
@@ -206,16 +191,32 @@ static void LEDTask(void* arg) {
 
 // -------------------------------------------
 
+TaskHandle_t uart_xHandle;
+TaskHandle_t led_xHandle;
+
 bool RTOS_Kernel() {
     printf("FreeRTOS Kernel Init!\r\n");
-    BaseType_t task1;
-    task1 = xTaskCreate(UartTask, "uart", 2048, NULL, 7, NULL);
-    configASSERT(task1 == pdPASS);
-    BaseType_t task2;
-    task2 = xTaskCreate(LEDTask, "led", 1024, NULL, 5, NULL);
-    configASSERT(task2 == pdPASS);
+
+    BaseType_t uart_task = xTaskCreate(uart_TaskFunction_t,
+        "uart_task",
+        2048,
+        NULL,
+        /* uxPriority:*/ (7),
+        &uart_xHandle);
+    configASSERT(uart_task == pdPASS);
+
+    BaseType_t led_task = xTaskCreate(led_TaskFunction_t,
+        "led_task",
+        1024,
+        NULL,
+        /* uxPriority:*/ (5),
+        &led_xHandle);
+    configASSERT(led_task == pdPASS);
+
     vTaskStartScheduler();
+
     printf("FreeRTOS Kernel Ok!\r\n");
+
     return 1;
 }
 
