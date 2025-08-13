@@ -97,7 +97,7 @@ list(APPEND sources_SRCS
     #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_3.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_4.c
     #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_5.c
-    
+
     #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/Common/mpu_wrappers.c // inclus doar daca incluzi ARM_CM7_MPU
 )
 
