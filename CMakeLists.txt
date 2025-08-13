@@ -21,9 +21,11 @@ cmake_minimum_required(VERSION 3.20)
 #
 
 # Core project settings
-project("FreeRTOS-Demo")
+project("STM32F746DISCO-Project")
 enable_language(C CXX ASM)
+add_compile_options(-fdiagnostics-color=always)
 message("Build type: " ${CMAKE_BUILD_TYPE})
+message("Florin Aurel Baciu")
 
 # Setup compiler settings
 set(CMAKE_C_STANDARD 11)
@@ -221,3 +223,5 @@ add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${PROJECT_ORIGINAL_NAME}.hex
     COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${PROJECT_ORIGINAL_NAME}.bin
 )
+
+

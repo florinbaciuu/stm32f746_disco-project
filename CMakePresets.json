@@ -8,7 +8,8 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "toolchainFile": "${sourceDir}/cmake/gnu-tools-for-stm32.cmake",
             "cacheVariables": {
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_COLOR_DIAGNOSTICS": "ON"
             }
         },
         {
@@ -17,7 +18,7 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
 
-                "PROJECT_ORIGINAL_NAME": "FreeRTOS-Demo",
+                "PROJECT_ORIGINAL_NAME": "STM32F746DISCO-Project",
 
                 "CMSIS_Dvendor": "STMicroelectronics:13",
                 "CMSIS_Dname": "STM32F746NGH6",
@@ -29,7 +30,9 @@
                 "CMSIS_Dmpu": "MPU",
                 "CMSIS_Dendian": "Little-endian",
                 "CMSIS_Dsecure": "",
-                "CMSIS_Tcompiler": "GCC"
+                "CMSIS_Tcompiler": "GCC",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_COLOR_DIAGNOSTICS": "ON"
             }
         },
         {
@@ -38,7 +41,7 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
 
-                "PROJECT_ORIGINAL_NAME": "FreeRTOS-Demo",
+                "PROJECT_ORIGINAL_NAME": "STM32F746DISCO-Project",
 
                 "CMSIS_Dvendor": "STMicroelectronics:13",
                 "CMSIS_Dname": "STM32F746NGH6",
@@ -50,7 +53,9 @@
                 "CMSIS_Dmpu": "MPU",
                 "CMSIS_Dendian": "Little-endian",
                 "CMSIS_Dsecure": "",
-                "CMSIS_Tcompiler": "GCC"
+                "CMSIS_Tcompiler": "GCC",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_COLOR_DIAGNOSTICS": "ON"
             }
         }
     ],
