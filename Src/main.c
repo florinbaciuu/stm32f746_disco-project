@@ -19,7 +19,9 @@
 /*********************
  *      INCLUDES
  *********************/
+#include <stdatomic.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "stm32f7xx_hal.h"
@@ -202,6 +204,21 @@ static void LEDTask(void* arg) {
     }
 }
 
+// -------------------------------------------
+
+bool RTOS_Kernel() {
+    printf("FreeRTOS Kernel Init!\r\n");
+    BaseType_t task1;
+    task1 = xTaskCreate(UartTask, "uart", 2048, NULL, 7, NULL);
+    configASSERT(task1 == pdPASS);
+    BaseType_t task2;
+    task2 = xTaskCreate(LEDTask, "led", 1024, NULL, 5, NULL);
+    configASSERT(task2 == pdPASS);
+    vTaskStartScheduler();
+    printf("FreeRTOS Kernel Ok!\r\n");
+    return 1;
+}
+
 //================================================================//
 
 /****************************/
@@ -230,18 +247,9 @@ int main(void) {
 
     printf("Hello World prin serial!\r\n");  // asta merge.
     printf("The board is on!\r\n");
+    HAL_UART_Transmit(&huart1, (uint8_t*) "Ce mai faci ma eu sunt bine din test!!!!\r\n", 41, 100);
 
-    HAL_UART_Transmit(&huart1, (uint8_t*) "Ce mai faci ma eu sunt bine din test!!!!", 41, 100);
-
-    BaseType_t task1;
-    task1 = xTaskCreate(UartTask, "uart", 2048, NULL, 7, NULL);
-    configASSERT(task1 == pdPASS);
-
-    BaseType_t task2;
-    task2 = xTaskCreate(LEDTask, "led", 1024, NULL, 5, NULL);
-    configASSERT(task1 == pdPASS);
-
-    vTaskStartScheduler();
+    RTOS_Kernel();
 
     while (1) {
         HAL_Delay(1500);
