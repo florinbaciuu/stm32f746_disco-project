@@ -11,8 +11,8 @@
 # If no LICENSE file comes with this software, it is provided AS-IS.
 #
 # -----------------------------------------------------------------------------
- 
- cmake_minimum_required(VERSION 3.20)
+
+cmake_minimum_required(VERSION 3.20)
 
 #
 # This file is generated only once, and is not re-generated.
@@ -34,7 +34,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 # Core MCU flags, CPU type, instruction set and FPU setup
-set(cpu_PARAMS 
+set(cpu_PARAMS
     ${CPU_FLAGS}
     -mcpu=cortex-m7
     -mthumb
@@ -45,7 +45,7 @@ set(cpu_PARAMS
 
 # Sources
 set(sources_SRCS
-	${CMAKE_CURRENT_SOURCE_DIR}/Src/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/main.c
 
 
     ${CMAKE_CURRENT_SOURCE_DIR}/Sys/syscall.c
@@ -81,14 +81,14 @@ list(APPEND sources_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/timers.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/GCC/ARM_CM7/r0p1/port.c
     #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/GCC/ARM_CM4F/port.c
-    
+
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_4.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/Common/mpu_wrappers.c
 )
 
 # Include directories for all compilers
 set(include_DIRS
-	${CMAKE_CURRENT_SOURCE_DIR}/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc
     ${CMAKE_CURRENT_SOURCE_DIR}/Startup
     ${CMAKE_CURRENT_SOURCE_DIR}/Sys
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Include
@@ -114,12 +114,12 @@ set(include_cxx_DIRS)
 set(include_asm_DIRS)
 
 # Symbols definition for all compilers
-set(symbols_SYMB    STM32F746xx
-                    USE_HAL_DRIVER)
+set(symbols_SYMB STM32F746xx
+    USE_HAL_DRIVER)
 
 # Symbols definition for each compiler
-set(symbols_c_SYMB 
-RTE_DEVICE_STARTUP_STM32F7XX
+set(symbols_c_SYMB
+    RTE_DEVICE_STARTUP_STM32F7XX
 )
 set(symbols_cxx_SYMB)
 set(symbols_asm_SYMB)

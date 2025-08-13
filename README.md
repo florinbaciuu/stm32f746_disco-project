@@ -19,3 +19,8 @@ git branch -M main
 git remote add origin https://github.com/florinbaciuu/stm32f746_disco-project.git
 git push -u origin main
 ```
+
+reinstall vscode extensions:
+```
+cat extensions.txt | xargs -n 1 code --install-extension
+```
