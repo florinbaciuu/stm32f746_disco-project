@@ -114,14 +114,20 @@ static void SystemClock_Config(void) {
     if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7) != HAL_OK)
         Error_Handler();
 
-    HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
-    HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
-    HAL_NVIC_SetPriority(SysTick_IRQn, 15, 0);  // prioritate joasă
+    // HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
+    // HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+    // HAL_NVIC_SetPriority(SysTick_IRQn, 15, 0);  // prioritate joasă
 }
 
 int __io_putchar(int ch) {
     HAL_UART_Transmit(&huart1, (uint8_t*) &ch, 1, HAL_MAX_DELAY);
     return ch;
+}
+
+void print_heap(void)
+{
+    printf("Free heap: %lu bytes\n", xPortGetFreeHeapSize());
+    printf("Minimum ever free: %lu bytes\n", xPortGetMinimumEverFreeHeapSize());
 }
 
 static void UartTask(void* arg) {
@@ -130,9 +136,12 @@ static void UartTask(void* arg) {
     for (;;) {
         HAL_UART_Transmit(&huart1, (uint8_t*) msg, strlen(msg), 100);
         printf("The board is on!\r\n");
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        print_heap();
+        vTaskDelay(pdMS_TO_TICKS(2500));
     }
 }
+
+
 
 int main(void) {
     HAL_Init();
@@ -153,7 +162,7 @@ int main(void) {
     HAL_UART_Transmit(&huart1, (uint8_t*) "Ce mai faci ma eu sunt bine din test!!!!", 41, 100);
 
     BaseType_t ok;
-    ok = xTaskCreate(UartTask, "uart", 4096, NULL, 7, NULL);
+    ok = xTaskCreate(UartTask, "uart", 2048, NULL, 7, NULL);
     configASSERT(ok == pdPASS);
 
     vTaskStartScheduler();

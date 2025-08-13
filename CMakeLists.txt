@@ -55,22 +55,31 @@ set(sources_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/Sys/stm32f7xx_it.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Sys/system_stm32f7xx.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Startup/startup_stm32f746xx.S
+    ${CMAKE_CURRENT_SOURCE_DIR}/Sys/stm32f7xx_hal_tick.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Sys/stm32f7xx_freertos_tick.c
+)
+### HAL
+#   1   listeaza toate fisierele HAL
+file(GLOB HAL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
+)
+#   2   Elimini timebase-urile template din listă: ca sa elimini erorile de first defined here and etc
+list(REMOVE_ITEM HAL_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_timebase_tim_template.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_timebase_rtc_alarm_template.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_timebase_rtc_wakeup_template.c
 )
 
+#   3   Appendezi la sources_SRCS toate fisierele C din HAL
 list(APPEND sources_SRCS
     # HAL core
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c
+    ${HAL_SRCS}
 
     # BSP Discovery (LED)
     ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c
 )
+### END HAL
 
 ## FREERTOS
 list(APPEND sources_SRCS
@@ -82,10 +91,14 @@ list(APPEND sources_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/tasks.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/timers.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/GCC/ARM_CM7/r0p1/port.c
-    #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/GCC/ARM_CM4F/port.c
-
+    
+    #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_1.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_2.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_3.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_4.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/Common/mpu_wrappers.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/MemMang/heap_5.c
+    
+    #${CMAKE_CURRENT_SOURCE_DIR}/FreeRTOS/portable/Common/mpu_wrappers.c // inclus doar daca incluzi ARM_CM7_MPU
 )
 
 # Include directories for all compilers
@@ -131,7 +144,7 @@ set(link_DIRS)
 set(link_LIBS)
 
 # Linker script
-set(linker_script_SRC ${CMAKE_CURRENT_SOURCE_DIR}/stm32f746xg_flash.ld)
+set(linker_script_SRC ${CMAKE_CURRENT_SOURCE_DIR}/linker-heap_4.ld)
 
 # Compiler options
 set(compiler_OPTS)

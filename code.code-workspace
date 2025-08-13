@@ -147,6 +147,7 @@
 		"terminal.integrated.defaultProfile.osx": "zsh",
 		//------------------------------------------------------------------
 		"files.associations": {
+			"stm32f7xx_hal_tim.h": "c"
 		},
 		//------------------------------------------------------------------
 		"accessibility.underlineLinks": true,

@@ -19,13 +19,17 @@ extern uint32_t SystemCoreClock;
 #define configCPU_CLOCK_HZ (SystemCoreClock)
 #define configTICK_RATE_HZ ((TickType_t) 1000)
 #define configMAX_PRIORITIES 7
-#define configMINIMAL_STACK_SIZE (1024)
-#define configTOTAL_HEAP_SIZE ((size_t) (128 * 1024)) /* ajustează după nevoie */
+#define configMINIMAL_STACK_SIZE (256) // words = 4 x 256 = 1024 bytes
+
 #define configMAX_TASK_NAME_LEN 16
 #define configUSE_16_BIT_TICKS 0
 #define configIDLE_SHOULD_YIELD 1
-#define configUSE_PORT_OPTIMISED_TASK_SELECTION 0
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
 #define configUSE_MALLOC_FAILED_HOOK 1
+
+#define configAPPLICATION_ALLOCATED_HEAP 0 //„Frățioare, nu-ți mai aloca tu intern ucHeap[] într-unul din fișierele heap_X.c. Îl definesc eu în aplicația mea și tu o să-l folosești pe ăla.”
+#define configTOTAL_HEAP_SIZE ((size_t) (32 * 1024)) /* heap_4.c */
+#define configUSE_HEAP_SCHEME            4
 
 /* Sincronizare &  */
 #define configUSE_MUTEXES 1
@@ -114,4 +118,8 @@ extern uint32_t SystemCoreClock;
 /* IMPORTANT:
    NU defini aici SysTick. Fă handler-ul în stm32f7xx_it.c și apelează HAL + RTOS.
    // NU: #define xPortSysTickHandler SysTick_Handler
-*/
+*///bada .. mai nou am refacut fisierele si am adaugat un timer special pt hal
+
+#define xPortSysTickHandler xPortSysTickHandler
+
+#define configOVERRIDE_DEFAULT_TICK_CONFIGURATION 1

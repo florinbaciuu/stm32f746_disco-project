@@ -162,7 +162,8 @@
 #define  TICK_INT_PRIORITY            0x0FU /*!< tick interrupt priority */
 #define  USE_RTOS                     0U
 #define  PREFETCH_ENABLE              1U /* To enable prefetch */
-#define  ART_ACCLERATOR_ENABLE        1U /* To enable ART Accelerator */
+// #define  ART_ACCLERATOR_ENABLE        1U /* To enable ART Accelerator */
+#define ART_ACCELERATOR_ENABLE        1U
 
 /* ########################## Assert Selection ############################## */
 /**

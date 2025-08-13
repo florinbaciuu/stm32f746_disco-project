@@ -6,12 +6,12 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-extern void xPortSysTickHandler(void);
+//extern void xPortSysTickHandler(void);
 
-void SysTick_Handler(void)
+__attribute__((weak)) void SysTick_Handler(void)
 {
-    HAL_IncTick();
-    if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-        xPortSysTickHandler();
-    }
+   //  HAL_IncTick(); // l=am pus in stm32f7xx_hal_timebase_tim
+    // if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
+    //     xPortSysTickHandler();
+    // }
 }
