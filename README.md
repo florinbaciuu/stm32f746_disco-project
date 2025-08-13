@@ -12,3 +12,10 @@ https://github.com/florinbaciuu/stm32f746_disco-project.git
 git clone --recurse-submodules https://github.com/florinbaciuu/stm32f746_disco-project.git
 ```
 ---
+```
+git init
+git commit -m "commit"
+git branch -M main
+git remote add origin https://github.com/florinbaciuu/stm32f746_disco-project.git
+git push -u origin main
+```
