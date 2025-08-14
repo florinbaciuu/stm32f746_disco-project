@@ -217,6 +217,7 @@ bool RTOS_Kernel() {
 
     printf("FreeRTOS Kernel Ok!\r\n");
 
+
     return 1;
 }
 
