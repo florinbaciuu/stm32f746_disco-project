@@ -149,7 +149,10 @@
 		"files.associations": {
 			"stm32f7xx_hal_tim.h": "c",
 			"stm32f7xx_hal.h": "c",
-			"task.h": "c"
+			"task.h": "c",
+			"stm32f7xx.h": "c",
+			"fonts.h": "c",
+			"lv_conf.h": "c"
 		},
 		//------------------------------------------------------------------
 		"accessibility.underlineLinks": true,

@@ -30,6 +30,9 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+// #include <lvgl.h>
+// #include <lv_conf.h>
+
 //================================================================//
 
 UART_HandleTypeDef       huart1;  // ai grijă să fie inițializat
